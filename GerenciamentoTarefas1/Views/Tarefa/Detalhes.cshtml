@@ -1,0 +1,34 @@
+﻿@model GerenciamentoTarefas.Models.Tarefa
+
+@{
+    ViewData["Title"] = "Detalhes da Tarefa";
+}
+
+<h2>Detalhes da Tarefa</h2>
+
+<div class="form-group">
+    <label><strong>Título:</strong></label>
+    <p>@Model.Titulo</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Descrição:</strong></label>
+    <p>@Model.Descricao</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Categoria:</strong></label>
+    <p>@Model.Categoria.Nome</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Data de Conclusão:</strong></label>
+    <p>@Model.DataConclusao.ToString("dd/MM/yyyy")</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Status:</strong></label>
+    <p>@Model.Status</p>
+</div>
+
+<a href="@Url.Action("Index", "Tarefa")" class="btn btn-secondary">Voltar</a>
