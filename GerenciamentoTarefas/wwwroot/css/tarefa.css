@@ -1,0 +1,11 @@
+.tarefa-index .criar {
+    float: right;
+}
+
+.tarefa-index .opcoes {
+    display: flex;
+    justify-content: space-between;
+    width: 180px;
+}
+
+

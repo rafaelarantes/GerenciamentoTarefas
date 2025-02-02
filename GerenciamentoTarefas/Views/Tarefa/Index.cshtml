@@ -4,38 +4,48 @@
     ViewData["Title"] = "Lista de Tarefas";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="tarefa-index">
 
-<p>
-    <a href="@Url.Action("Criar")" class="btn btn-primary">Criar Tarefa</a>
-</p>
+    <h1>@ViewData["Title"]</h1>
+    <hr />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Data de Conclusão</th>
-            <th>Status</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tarefa in Model)
-        {
+    <div class="criar">
+        <a href="@Url.Action("Criar")" class="btn btn-primary">Criar Tarefa</a>
+    </div>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@tarefa.Nome</td>
-                <td>@tarefa.Descricao</td>
-                <td>@tarefa.DataConclusao.ToString("dd/MM/yyyy")</td>
-                <td>@tarefa.Status</td>
-                <td>
-                    <a href="@Url.Action("Editar", new { id = tarefa.Id })" class="btn btn-warning">Editar</a>
-                    <form asp-action="Excluir" asp-route-id="@tarefa.Id" method="post">
-                        @Html.AntiForgeryToken() 
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    </form>
-                </td>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Data de Conclusão</th>
+                <th>Status</th>
+                <th>Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var tarefa in Model)
+            {
+                <tr>
+                    <td>@tarefa.Nome</td>
+                    <td>@tarefa.Descricao</td>
+                    <td>@tarefa.DataConclusao.ToString("dd/MM/yyyy")</td>
+                    <td>@tarefa.Status</td>
+                    <td class="opcoes">
+                        <div>
+                            <a href="@Url.Action("Editar", new { id = tarefa.Id })" class="btn btn-warning">Editar</a>
+                        </div>
+                        <div>
+                            <form asp-action="Excluir" asp-route-id="@tarefa.Id" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>
+               
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
