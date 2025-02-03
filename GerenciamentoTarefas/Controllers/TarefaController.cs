@@ -11,12 +11,10 @@ namespace GerenciamentoTarefas.Controllers
     [Authorize]
     public class TarefaController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly ITarefaRepository _tarefaRepository;
 
-        public TarefaController(ApplicationDbContext context, ITarefaRepository tarefaRepository)
+        public TarefaController(ITarefaRepository tarefaRepository)
         {
-            _context = context;
             _tarefaRepository = tarefaRepository;
         }
 
