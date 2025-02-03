@@ -31,16 +31,19 @@
                     <td>@tarefa.Descricao</td>
                     <td>@tarefa.DataConclusao.ToString("dd/MM/yyyy")</td>
                     <td>@tarefa.Status</td>
-                    <td class="opcoes">
-                        <div>
-                            <a href="@Url.Action("Editar", new { id = tarefa.Id })" class="btn btn-warning">Editar</a>
+                    <td>
+                        <div class="acoes">
+                            <div>
+                                <a href="@Url.Action("Editar", new { id = tarefa.Id })" class="btn btn-primary">Editar</a>
+                            </div>
+                            <div>
+                                <form asp-action="Excluir" asp-route-id="@tarefa.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </form>
+                            </div>
                         </div>
-                        <div>
-                            <form asp-action="Excluir" asp-route-id="@tarefa.Id" method="post">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        </div>
+                       
                
                     </td>
                 </tr>

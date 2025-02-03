@@ -11,6 +11,7 @@ namespace GerenciamentoTarefas.Models
         [StringLength(100, ErrorMessage = "O nome da tarefa não pode ter mais de 100 caracteres.")]
         public string Nome { get; set; }
 
+        [Required(ErrorMessage = "A descrição da tarefa é obrigatório.")]
         [StringLength(500, ErrorMessage = "A descrição não pode ter mais de 500 caracteres.")]
         public string Descricao { get; set; }
 
@@ -23,6 +24,7 @@ namespace GerenciamentoTarefas.Models
         [RegularExpression(@"^(Pendente|Concluida)$", ErrorMessage = "O status deve ser 'Pendente' ou 'Concluída'.")]
         public string Status { get; set; }
 
+        [Display(Name = "Categoria")]
         [Required(ErrorMessage = "A categoria da tarefa é obrigatória.")]
         public int CategoriaId { get; set; }
     }

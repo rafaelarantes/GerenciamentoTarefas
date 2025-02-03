@@ -2,10 +2,22 @@
     float: right;
 }
 
-.tarefa-index .opcoes {
+.tarefa-index .acoes {
     display: flex;
     justify-content: space-between;
-    width: 180px;
+    max-width: 150px;
+    min-width: 120px;
+}
+
+.tarefa-criar form, .tarefa-editar form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tarefa-criar .form-group, .tarefa-editar .form-group {
+    width: 30%;
+    margin-bottom: 10px;
 }
 
 
