@@ -26,10 +26,13 @@ namespace GerenciamentoTarefas.Controllers
 
         public async Task<IActionResult> Criar()
         {
-            var categorias = await _tarefaRepository.ObterCategorias();
+            var tarefaViewModel = new TarefaViewModel
+            {
+                DataConclusao = DateTime.Now,
+                Categorias = await PreencherCategoria()
+            };
 
-            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome");
-            return View();
+            return View(tarefaViewModel);
         }
 
         [HttpPost]
@@ -53,24 +56,17 @@ namespace GerenciamentoTarefas.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var categorias = await _tarefaRepository.ObterCategorias();
+            var tarefaViewModel = new TarefaViewModel
+            {
+                Categorias = await PreencherCategoria()
+            };
 
-            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome", model.CategoriaId);
-            return View(model);
+            return View(tarefaViewModel);
         }
 
         public async Task<IActionResult> Editar(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var tarefa = await _tarefaRepository.ObterTarefaPorId(id);
-            if (tarefa == null)
-            {
-                return NotFound();
-            }
 
             var tarefaViewModel = new TarefaViewModel
             {
@@ -79,12 +75,10 @@ namespace GerenciamentoTarefas.Controllers
                 Descricao = tarefa.Descricao,
                 DataConclusao = tarefa.DataConclusao,
                 Status = tarefa.Status,
-                CategoriaId = tarefa.CategoriaId
+                CategoriaId = tarefa.CategoriaId,
+                Categorias = await PreencherCategoria(tarefa.CategoriaId)
             };
 
-            var categorias = await _tarefaRepository.ObterCategorias();
-
-            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome", tarefaViewModel.CategoriaId);
             return View(tarefaViewModel);
         }
 
@@ -92,18 +86,9 @@ namespace GerenciamentoTarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, TarefaViewModel model)
         {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 var tarefa = await _tarefaRepository.ObterTarefaPorId(id);
-                if (tarefa == null)
-                {
-                    return NotFound();
-                }
 
                 tarefa.Nome = model.Nome;
                 tarefa.Descricao = model.Descricao;
@@ -116,9 +101,8 @@ namespace GerenciamentoTarefas.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var categorias = await _tarefaRepository.ObterCategorias();
+            model.Categorias = await PreencherCategoria(model.CategoriaId);
 
-            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome", model.CategoriaId);
             return View(model);
         }
 
@@ -129,6 +113,13 @@ namespace GerenciamentoTarefas.Controllers
             await _tarefaRepository.Excluir(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<SelectList> PreencherCategoria(int categoriaId = 0)
+        {
+            var categorias = await _tarefaRepository.ObterCategorias();
+
+            return new SelectList(categorias, "Id", "Nome", categoriaId);
         }
     }
 }

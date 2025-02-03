@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GerenciamentoTarefas.Models
@@ -28,5 +29,7 @@ namespace GerenciamentoTarefas.Models
         [Display(Name = "Categoria")]
         [Required(ErrorMessage = "A categoria da tarefa é obrigatória.")]
         public int CategoriaId { get; set; }
+
+        public SelectList? Categorias { get; set; }
     }
 }

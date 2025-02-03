@@ -30,7 +30,7 @@
             <label asp-for="CategoriaId" class="control-label"></label>
             <select asp-for="CategoriaId" class="form-control">
                 <option value="">Selecione uma Categoria</option>
-                @foreach (var categoria in ViewData["CategoriaId"] as SelectList)
+                @foreach (var categoria in Model.Categorias)
                 {
                     <option value="@categoria.Value">@categoria.Text</option>
                 }
