@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GerenciamentoTarefas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250202151307_Tabelas")]
-    partial class Tabelas
+    [Migration("20250203231119_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,23 @@ namespace GerenciamentoTarefas.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categorias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nome = "Trabalho"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nome = "Pessoal"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nome = "Outros"
+                        });
                 });
 
             modelBuilder.Entity("GerenciamentoTarefas.Models.Tarefa", b =>
