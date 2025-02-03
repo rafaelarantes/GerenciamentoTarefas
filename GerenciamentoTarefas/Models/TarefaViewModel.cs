@@ -13,6 +13,7 @@ namespace GerenciamentoTarefas.Models
 
         [Required(ErrorMessage = "A descrição da tarefa é obrigatório.")]
         [StringLength(500, ErrorMessage = "A descrição não pode ter mais de 500 caracteres.")]
+        [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
         [Required(ErrorMessage = "A data de conclusão é obrigatória.")]

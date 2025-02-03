@@ -2,6 +2,11 @@
     float: right;
 }
 
+.tarefa-index .tarefas {
+    overflow-x: auto;
+    width: 100%;
+}
+
 .tarefa-index .acoes {
     display: flex;
     justify-content: space-between;
