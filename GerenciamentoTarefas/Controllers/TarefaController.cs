@@ -1,5 +1,6 @@
 ﻿using GerenciamentoTarefas.Data;
 using GerenciamentoTarefas.Models;
+using GerenciamentoTarefas.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,30 +12,28 @@ namespace GerenciamentoTarefas.Controllers
     public class TarefaController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITarefaRepository _tarefaRepository;
 
-        public TarefaController(ApplicationDbContext context)
+        public TarefaController(ApplicationDbContext context, ITarefaRepository tarefaRepository)
         {
             _context = context;
+            _tarefaRepository = tarefaRepository;
         }
 
-        // GET: Tarefas
         public async Task<IActionResult> Index()
         {
-            var tarefas = await _context.Tarefas
-                .Include(t => t.Categoria)
-                .Where(t => t.UsuarioId == User.Identity.Name)
-                .ToListAsync();
+            var tarefas = await _tarefaRepository.ObterTarefasPorUsuario(User.Identity.Name);
             return View(tarefas);
         }
 
-        // GET: Tarefas/Create
-        public IActionResult Criar()
+        public async Task<IActionResult> Criar()
         {
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome");
+            var categorias = await _tarefaRepository.ObterCategorias();
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome");
             return View();
         }
 
-        // POST: Tarefas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Criar(TarefaViewModel model)
@@ -51,16 +50,17 @@ namespace GerenciamentoTarefas.Controllers
                     UsuarioId = User.Identity.Name
                 };
 
-                _context.Add(tarefa);
-                await _context.SaveChangesAsync();
+                await _tarefaRepository.Incluir(tarefa);
+
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome", model.CategoriaId);
+            var categorias = await _tarefaRepository.ObterCategorias();
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome", model.CategoriaId);
             return View(model);
         }
 
-        // GET: Tarefas/Edit/5
         public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
@@ -68,7 +68,7 @@ namespace GerenciamentoTarefas.Controllers
                 return NotFound();
             }
 
-            var tarefa = await _context.Tarefas.FindAsync(id);
+            var tarefa = await _tarefaRepository.ObterTarefaPorId(id);
             if (tarefa == null)
             {
                 return NotFound();
@@ -84,11 +84,12 @@ namespace GerenciamentoTarefas.Controllers
                 CategoriaId = tarefa.CategoriaId
             };
 
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome", tarefaViewModel.CategoriaId);
+            var categorias = await _tarefaRepository.ObterCategorias();
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome", tarefaViewModel.CategoriaId);
             return View(tarefaViewModel);
         }
 
-        // POST: Tarefas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, TarefaViewModel model)
@@ -100,46 +101,35 @@ namespace GerenciamentoTarefas.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var tarefa = await _tarefaRepository.ObterTarefaPorId(id);
+                if (tarefa == null)
                 {
-                    var tarefa = await _context.Tarefas.FindAsync(id);
-                    if (tarefa == null)
-                    {
-                        return NotFound();
-                    }
-
-                    tarefa.Nome = model.Nome;
-                    tarefa.Descricao = model.Descricao;
-                    tarefa.DataConclusao = model.DataConclusao;
-                    tarefa.Status = model.Status;
-                    tarefa.CategoriaId = model.CategoriaId;
-
-                    _context.Update(tarefa);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Tarefas.Any(t => t.Id == id))
-                    {
-                        return NotFound();
-                    }
-                    throw;
-                }
+
+                tarefa.Nome = model.Nome;
+                tarefa.Descricao = model.Descricao;
+                tarefa.DataConclusao = model.DataConclusao;
+                tarefa.Status = model.Status;
+                tarefa.CategoriaId = model.CategoriaId;
+
+                await _tarefaRepository.Atualizar(tarefa);
+                
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome", model.CategoriaId);
+            var categorias = await _tarefaRepository.ObterCategorias();
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "Id", "Nome", model.CategoriaId);
             return View(model);
         }
 
-        // POST: Tarefas/Excluir/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Excluir(int id)
         {
-            var tarefa = await _context.Tarefas.FindAsync(id);
-            _context.Tarefas.Remove(tarefa);
-            await _context.SaveChangesAsync();
+            await _tarefaRepository.Excluir(id);
+
             return RedirectToAction(nameof(Index));
         }
     }
