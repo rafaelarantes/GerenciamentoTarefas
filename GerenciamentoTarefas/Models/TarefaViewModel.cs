@@ -16,7 +16,7 @@ namespace GerenciamentoTarefas.Models
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
-        [Required(ErrorMessage = "A data de conclusão é obrigatória.")]
+        [Required(ErrorMessage = "A data de conclusão da tarefa é obrigatória.")]
         [DataType(DataType.Date, ErrorMessage = "Formato de data inválido.")]
         [Display(Name = "Data de Conclusão")]
         public DateTime DataConclusao { get; set; }
