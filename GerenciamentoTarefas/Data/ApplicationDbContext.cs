@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GerenciamentoTarefas.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>  
+    public class ApplicationDbContext : IdentityDbContext<Usuario>  
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -26,7 +26,13 @@ namespace GerenciamentoTarefas.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            ApplicationDbContext.SeedData(modelBuilder); 
+            ApplicationDbContext.SeedData(modelBuilder);
+
+            modelBuilder.Entity<Tarefa>()
+               .HasOne(t => t.Usuario)
+               .WithMany(u => u.Tarefas)
+               .HasForeignKey(t => t.UsuarioId)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

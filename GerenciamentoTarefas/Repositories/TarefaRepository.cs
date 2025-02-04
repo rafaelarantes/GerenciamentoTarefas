@@ -12,12 +12,12 @@ namespace GerenciamentoTarefas.Repositories
         {
             _context = context;
         }
-        public async Task<List<Tarefa>> ObterTarefasPorUsuario(string usuario)
+        public async Task<List<Tarefa>> ObterTarefasPorUsuario(string usuarioId)
         {
             return await _context.Tarefas
                 .AsNoTracking()
                 .Include(t => t.Categoria)
-                .Where(t => t.Usuario == usuario)
+                .Where(t => t.UsuarioId == usuarioId)
                 .ToListAsync();
         }
 

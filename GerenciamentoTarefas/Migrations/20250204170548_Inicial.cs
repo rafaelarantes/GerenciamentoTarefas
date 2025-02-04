@@ -182,11 +182,17 @@ namespace GerenciamentoTarefas.Migrations
                     DataConclusao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tarefas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tarefas_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tarefas_Categorias_CategoriaId",
                         column: x => x.CategoriaId,
@@ -248,6 +254,11 @@ namespace GerenciamentoTarefas.Migrations
                 name: "IX_Tarefas_CategoriaId",
                 table: "Tarefas",
                 column: "CategoriaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tarefas_UsuarioId",
+                table: "Tarefas",
+                column: "UsuarioId");
         }
 
         /// <inheritdoc />

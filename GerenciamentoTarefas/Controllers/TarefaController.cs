@@ -3,6 +3,7 @@ using GerenciamentoTarefas.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace GerenciamentoTarefas.Controllers
 {
@@ -10,6 +11,7 @@ namespace GerenciamentoTarefas.Controllers
     public class TarefaController : Controller
     {
         private readonly ITarefaRepository _tarefaRepository;
+        private string UsuarioId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
 
         public TarefaController(ITarefaRepository tarefaRepository)
         {
@@ -18,7 +20,7 @@ namespace GerenciamentoTarefas.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tarefas = await _tarefaRepository.ObterTarefasPorUsuario(User.Identity.Name);
+            var tarefas = await _tarefaRepository.ObterTarefasPorUsuario(UsuarioId);
             return View(tarefas);
         }
 
@@ -46,7 +48,7 @@ namespace GerenciamentoTarefas.Controllers
                     DataConclusao = model.DataConclusao,
                     Status = model.Status,
                     CategoriaId = model.CategoriaId,
-                    Usuario = User.Identity.Name
+                    UsuarioId = UsuarioId,
                 };
 
                 await _tarefaRepository.Incluir(tarefa);
