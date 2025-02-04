@@ -1,10 +1,8 @@
-﻿using GerenciamentoTarefas.Data;
-using GerenciamentoTarefas.Models;
+﻿using GerenciamentoTarefas.Models;
 using GerenciamentoTarefas.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace GerenciamentoTarefas.Controllers
 {
@@ -48,7 +46,7 @@ namespace GerenciamentoTarefas.Controllers
                     DataConclusao = model.DataConclusao,
                     Status = model.Status,
                     CategoriaId = model.CategoriaId,
-                    UsuarioId = User.Identity.Name
+                    Usuario = User.Identity.Name
                 };
 
                 await _tarefaRepository.Incluir(tarefa);

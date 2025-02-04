@@ -17,7 +17,7 @@ namespace GerenciamentoTarefas.Repositories
             return await _context.Tarefas
                 .AsNoTracking()
                 .Include(t => t.Categoria)
-                .Where(t => t.UsuarioId == usuario)
+                .Where(t => t.Usuario == usuario)
                 .ToListAsync();
         }
 

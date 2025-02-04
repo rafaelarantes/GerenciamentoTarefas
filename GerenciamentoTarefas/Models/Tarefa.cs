@@ -9,6 +9,6 @@
         public string Status { get; set; }
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
-        public string UsuarioId { get; set; }
+        public string Usuario { get; set; }
     }
 }

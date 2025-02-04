@@ -147,7 +147,7 @@ namespace GerenciamentoTarefas.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UsuarioId")
+                    b.Property<string>("Usuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

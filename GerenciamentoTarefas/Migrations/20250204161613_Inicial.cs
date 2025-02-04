@@ -182,7 +182,7 @@ namespace GerenciamentoTarefas.Migrations
                     DataConclusao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

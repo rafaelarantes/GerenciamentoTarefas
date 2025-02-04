@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GerenciamentoTarefas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250203231119_Inicial")]
+    [Migration("20250204161613_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -150,7 +150,7 @@ namespace GerenciamentoTarefas.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UsuarioId")
+                    b.Property<string>("Usuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
