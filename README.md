@@ -2,6 +2,7 @@
 - .Net 9
 - Identity
 - Razor
+- SQL Server
 
 Para executar o projeto:
 ```sh
